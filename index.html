@@ -643,6 +643,13 @@
             transition: opacity 0.3s ease;
         }
 
+        /* NEW CLASS FOR CUMULATIVE LABELS */
+        .fin-cum-label {
+            fill: #4CC9FF;
+            font-weight: 700;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+        }
+
         .fin-bg {
             opacity: 0; 
             transition: opacity 0.3s ease; 
@@ -915,27 +922,27 @@
                     <circle class="fin-marker neg" cx="100" cy="337" r="6" />
                     <!-- Label BG pill for Y1 -->
                     <rect class="fin-bg" x="78" y="342" width="44" height="18" />
-                    <text class="fin-label" x="100" y="355">-€22k</text>
+                    <text class="fin-label fin-cum-label" x="100" y="355">-€22k</text>
 
                     <circle class="fin-marker neg" cx="200" cy="298" r="6" />
                     <!-- Label BG pill for Y2 -->
                     <rect class="fin-bg" x="178" y="305" width="44" height="18" />
-                    <text class="fin-label" x="200" y="318">-€9k</text>
+                    <text class="fin-label fin-cum-label" x="200" y="318">-€9k</text>
 
                     <circle class="fin-marker pos" cx="300" cy="211" r="6" />
                     <!-- Label BG pill for Y3 -->
                     <rect class="fin-bg" x="308" y="202" width="44" height="18" />
-                    <text class="fin-label" x="330" y="215">+€21k</text>
+                    <text class="fin-label fin-cum-label" x="330" y="215">+€21k</text>
 
                     <circle class="fin-marker pos" cx="400" cy="140" r="6" />
                     <!-- Label BG pill for Y4 -->
                     <rect class="fin-bg" x="408" y="132" width="44" height="18" />
-                    <text class="fin-label" x="430" y="145">+€46k</text>
+                    <text class="fin-label fin-cum-label" x="430" y="145">+€46k</text>
 
                     <circle class="fin-marker pos" cx="500" cy="110" r="6" />
                     <!-- Label BG pill for Y5 -->
                     <rect class="fin-bg" x="508" y="102" width="44" height="18" />
-                    <text class="fin-label" x="530" y="115">+€56k</text>
+                    <text class="fin-label fin-cum-label" x="530" y="115">+€56k</text>
 
                     <!-- X Labels -->
                     <text x="100" y="285" fill="#fff" font-family="var(--font-main)" font-size="14" text-anchor="middle">Y1</text>
