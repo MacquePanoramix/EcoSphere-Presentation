@@ -431,7 +431,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- SLIDE 5: FRIENDS COMPETITION (NEW) --- */
+        /* --- SLIDE 5: FRIENDS COMPETITION --- */
         #slide-5 {
             justify-content: center;
             align-items: center;
@@ -497,8 +497,76 @@
 
         .lb-row.you { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); }
 
-        /* --- SLIDE 6: FINANCE (WAS SLIDE 5) --- */
-        #slide-6 {
+        /* --- SLIDE 6: PROJECTED USERS (NEW) --- */
+        #slide-users {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glass-panel {
+            background: rgba(20, 20, 24, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .users-chart {
+            width: 60vw;
+            height: 40vh;
+            overflow: visible;
+        }
+
+        .chart-header {
+            font-family: var(--font-main);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .chart-axis { stroke: rgba(255,255,255,0.2); stroke-width: 1; }
+        .chart-grid { stroke: rgba(255,255,255,0.05); stroke-width: 1; stroke-dasharray: 4 4; }
+        .chart-text { fill: var(--text-muted); font-size: 14px; font-family: var(--font-accent); }
+        
+        .chart-line {
+            fill: none;
+            stroke: var(--neon-green);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            transition: stroke-dashoffset 1.5s var(--ease-out-back);
+        }
+
+        .chart-marker {
+            fill: var(--bg-dark);
+            stroke: var(--neon-green);
+            stroke-width: 3;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .chart-value {
+            fill: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: var(--font-main);
+            text-anchor: middle;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .slide.active .chart-line { stroke-dashoffset: 0; }
+        
+        .slide.active .chart-marker { opacity: 1; transition-delay: 1.2s; }
+        .slide.active .chart-value { opacity: 1; transform: translateY(0); transition-delay: 1.4s; }
+
+        /* --- SLIDE 7: FINANCE (WAS SLIDE 6) --- */
+        #slide-finance {
             align-items: flex-end;
             justify-content: center;
             padding-bottom: 8%;
@@ -646,7 +714,7 @@
             </div>
         </div>
 
-        <!-- SLIDE 5: FRIENDS COMPETITION (NEW) -->
+        <!-- SLIDE 5: FRIENDS COMPETITION -->
         <div class="slide" id="slide-5">
             <canvas id="sphere-canvas"></canvas>
             <div class="leaderboard">
@@ -678,8 +746,55 @@
             </div>
         </div>
 
-        <!-- SLIDE 6: FINANCE (WAS SLIDE 5) -->
-        <div class="slide" id="slide-6">
+        <!-- SLIDE 6: PROJECTED USERS (NEW) -->
+        <div class="slide" id="slide-users">
+            <div class="glass-panel">
+                <h2 class="chart-header">Projected Users (EU)</h2>
+                <svg class="users-chart" viewBox="0 0 800 500">
+                    <!-- Axes -->
+                    <line x1="50" y1="50" x2="50" y2="450" class="chart-axis"/>
+                    <line x1="50" y1="450" x2="750" y2="450" class="chart-axis"/>
+                    
+                    <!-- Y Ticks -->
+                    <text x="40" y="455" text-anchor="end" class="chart-text">0</text>
+                    <line x1="45" y1="316.6" x2="750" y2="316.6" class="chart-grid"/>
+                    <text x="40" y="321" text-anchor="end" class="chart-text">50k</text>
+                    <line x1="45" y1="183.3" x2="750" y2="183.3" class="chart-grid"/>
+                    <text x="40" y="188" text-anchor="end" class="chart-text">100k</text>
+                    <line x1="45" y1="50" x2="750" y2="50" class="chart-grid"/>
+                    <text x="40" y="55" text-anchor="end" class="chart-text">150k</text>
+
+                    <!-- X Labels -->
+                    <text x="100" y="480" text-anchor="middle" class="chart-text">Y1</text>
+                    <text x="250" y="480" text-anchor="middle" class="chart-text">Y2</text>
+                    <text x="400" y="480" text-anchor="middle" class="chart-text">Y3</text>
+                    <text x="550" y="480" text-anchor="middle" class="chart-text">Y4</text>
+                    <text x="700" y="480" text-anchor="middle" class="chart-text">Y5</text>
+
+                    <!-- Data Line -->
+                    <path class="chart-line" d="M100,343 L250,183 L400,103 L550,130 L700,183" />
+
+                    <!-- Markers and Values -->
+                    <circle cx="100" cy="343" r="6" class="chart-marker"/>
+                    <text x="100" y="325" class="chart-value">40k</text>
+
+                    <circle cx="250" cy="183" r="6" class="chart-marker"/>
+                    <text x="250" y="165" class="chart-value">100k</text>
+
+                    <circle cx="400" cy="103" r="6" class="chart-marker"/>
+                    <text x="400" y="85" class="chart-value">130k</text>
+
+                    <circle cx="550" cy="130" r="6" class="chart-marker"/>
+                    <text x="550" y="112" class="chart-value">120k</text>
+
+                    <circle cx="700" cy="183" r="6" class="chart-marker"/>
+                    <text x="700" y="165" class="chart-value">100k</text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: FINANCE (WAS SLIDE 6) -->
+        <div class="slide" id="slide-finance">
             <div class="chart-container">
                 <!-- Bars will be animated by JS -->
                 <div class="bar-group">
@@ -707,6 +822,7 @@
 
         <div id="nav-dots">
             <div class="dot active"></div>
+            <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
@@ -956,9 +1072,9 @@
             if (currentSlide === 4) {
                 sphereAnim.stop();
             }
-            // If leaving Slide 6 (Finance, Index 5)
-            if (currentSlide === 5) { 
-                const bars = slides[5].querySelectorAll('.bar');
+            // If leaving Slide 7 (Finance, Index 6) - WAS Index 5
+            if (currentSlide === 6) { 
+                const bars = slides[6].querySelectorAll('.bar');
                 bars.forEach(b => b.style.height = '0%');
             }
 
@@ -975,7 +1091,7 @@
             // Trigger In-Slide Animations
             if (currentSlide === 1) triggerSlide2(); // Competitors
             if (currentSlide === 4) triggerSlide5(); // Sphere (Friends)
-            if (currentSlide === 5) triggerSlide6(); // Finance
+            if (currentSlide === 6) triggerSlide6(); // Finance
         }
 
         // Slide 2 Specific Animation (Sequential Stamping)
@@ -996,9 +1112,9 @@
             }, 100);
         }
 
-        // Slide 6 Specific Animation (Sequential Bars) - WAS Slide 5
+        // Slide 7 Specific Animation (Sequential Bars) - WAS Slide 5
         function triggerSlide6() {
-            const bars = slides[5].querySelectorAll('.bar');
+            const bars = slides[6].querySelectorAll('.bar');
             bars.forEach((bar, i) => {
                 const targetH = bar.getAttribute('data-h');
                 setTimeout(() => {
