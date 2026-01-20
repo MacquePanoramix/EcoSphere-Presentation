@@ -695,6 +695,18 @@
             padding: 5%;
         }
 
+        /* --- 修正：Slide 9 財務表格完整顯示 --- */
+        #slide-finance-sheet .img-placeholder img {
+            object-fit: contain !important; /* 強制完整顯示，不裁切 */
+            width: 100%;
+            height: 100%;
+        }
+
+/* 建議把背景調深一點，這樣圖片縮放時留下的黑邊會跟背景融合，看起來比較像一個螢幕 */
+        #slide-finance-sheet .fin-sheet-full {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
         .fin-sheet-full {
             width: 80%;
             height: 80%;
