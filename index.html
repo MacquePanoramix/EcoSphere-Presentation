@@ -183,6 +183,29 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
+
+        /* Revised Hero Title Logo Style */
+        .hero-text .heroTitleLogo {
+            font-family: "Press Start 2P", monospace;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: #F2B233;
+            background: none !important;
+            -webkit-text-fill-color: #F2B233 !important;
+            -webkit-background-clip: initial !important;
+            text-shadow:
+                -4px -4px 0 #0b0f14,
+                0px -4px 0 #0b0f14,
+                4px -4px 0 #0b0f14,
+                -4px  0px 0 #0b0f14,
+                4px  0px 0 #0b0f14,
+                -4px  4px 0 #0b0f14,
+                0px  4px 0 #0b0f14,
+                4px  4px 0 #0b0f14,
+                0px 10px 22px rgba(0,0,0,0.45);
+            font-size: 5rem; /* Adjusted down from 8rem to prevent overflow */
+            line-height: 1.2;
+        }
         
         .hero-subtitle {
             font-family: var(--font-accent);
@@ -466,8 +489,8 @@
                 </div>
             </div>
             <div class="hero-text">
-                <h1>EcoSphere</h1>
-                <div class="hero-subtitle">Move to Earn. Save the World.</div>
+                <h1 class="heroTitleLogo">EcoSphere</h1>
+                <div class="hero-subtitle">Earn with your steps. Compete with friends</div>
             </div>
         </div>
 
