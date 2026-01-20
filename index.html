@@ -18,6 +18,7 @@
             --neon-cyan: #00f3ff;
             --neon-magenta: #ff0055;
             --neon-yellow: #f2ff00;
+            --neon-purple: #9d46ff;
             --text-main: #ffffff;
             --text-muted: #888899;
             
@@ -327,7 +328,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             display: flex;
-            gap: 120px;
+            gap: 30px;
             align-items: center;
             justify-content: center;
         }
@@ -430,8 +431,74 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- SLIDE 5: FINANCE --- */
+        /* --- SLIDE 5: FRIENDS COMPETITION (NEW) --- */
         #slide-5 {
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #sphere-canvas {
+            width: 60vh;
+            height: 60vh;
+            z-index: 1;
+            /* Simple fade in/scale up */
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 1s ease, transform 1s var(--ease-out-back);
+        }
+
+        .slide.active #sphere-canvas {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .leaderboard {
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            width: 250px;
+            background: rgba(20, 20, 24, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            z-index: 2;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.6s ease 0.4s;
+        }
+
+        .slide.active .leaderboard {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .lb-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+        .lb-row:last-child { margin-bottom: 0; }
+        .lb-row:hover { background: rgba(255,255,255,0.05); }
+
+        .lb-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--c);
+            margin-right: 12px;
+            box-shadow: 0 0 8px var(--c);
+        }
+        .lb-name { flex: 1; font-weight: 700; font-size: 0.9rem; }
+        .lb-score { font-family: var(--font-accent); font-size: 0.7rem; color: var(--text-muted); }
+
+        .lb-row.you { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); }
+
+        /* --- SLIDE 6: FINANCE (WAS SLIDE 5) --- */
+        #slide-6 {
             align-items: flex-end;
             justify-content: center;
             padding-bottom: 8%;
@@ -543,13 +610,11 @@
                 </svg>
                 <div class="privacy-icons">
                     <!-- Footsteps -->
-                    <svg class="p-icon" viewBox="0 0 24 24">
-                        <path d="M19,5.55C19,8.55 17.69,11.23 15.63,13.06L16.5,15.65C16.92,15.82 17.38,15.93 17.85,15.93C18.67,15.93 19.45,15.7 20.14,15.3L22,20.84C20.67,21.57 19.16,22 17.5,22C14.79,22 12.3,20.9 10.5,19.1L12.55,16.4C13.88,17.38 15.53,17.97 17.34,17.97C17.5,17.97 17.65,17.97 17.81,17.95L16.27,13.34C14.07,11.75 12.64,9.15 12.64,6.23C12.64,3.31 14.07,0.71 16.27,0L17.81,4.61C18.5,4.83 19,5.16 19,5.55Z" fill="white"/>
-                    </svg>
+                    <img class="p-icon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path fill='%23ffffff' d='M25 7c-5 0-9 4-9 9v9c0 4 3 8 8 9l6 1c3 1 5 3 5 6v10c0 4-3 7-7 7H17c-5 0-9-4-9-9v-7c0-3 2-6 5-7l7-2c2-1 4-3 4-6V16c0-1 1-2 2-2h6c1 0 2-1 2-2V9c0-1-1-2-2-2h-7z'/><path fill='%23ffffff' d='M44 10c-4 0-7 3-7 7v7c0 3 2 6 5 7l4 1c2 0 3 2 3 4v8c0 3-2 5-5 5h-7c-3 0-6-3-6-6v-5c0-2 1-4 3-4l5-2c2 0 3-2 3-4v-7c0-1 1-2 2-2h4c1 0 2-1 2-2v-2c0-1-1-2-2-2h-4z'/></svg>" alt="Steps">
                     <!-- Plus -->
                     <svg class="p-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="white"/></svg>
                     <!-- Wifi -->
-                    <svg class="p-icon" viewBox="0 0 24 24"><path d="M12.01 21.49L23.64 7c-.45-.34-4.93-4-11.64-4C5.28 3 .81 6.66.36 7l11.63 14.49.01.01.01-.01z" fill="white"/></svg>
+                    <img class="p-icon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path fill='%23ffffff' d='M32 47a5 5 0 1 0 0 10a5 5 0 0 0 0-10z'/><path fill='%23ffffff' d='M12 33a30 30 0 0 1 40 0l-5 6a22 22 0 0 0-30 0l-5-6z'/><path fill='%23ffffff' d='M20 41a18 18 0 0 1 24 0l-5 6a10 10 0 0 0-14 0l-5-6z'/><path fill='%23ffffff' d='M4 25a42 42 0 0 1 56 0l-5 6a34 34 0 0 0-46 0l-5-6z'/></svg>" alt="WiFi">
                 </div>
             </div>
             <div class="privacy-stamp">NO GPS</div>
@@ -581,8 +646,40 @@
             </div>
         </div>
 
-        <!-- SLIDE 5: FINANCE -->
+        <!-- SLIDE 5: FRIENDS COMPETITION (NEW) -->
         <div class="slide" id="slide-5">
+            <canvas id="sphere-canvas"></canvas>
+            <div class="leaderboard">
+                <div class="lb-row you" style="--c: var(--neon-green)">
+                    <div class="lb-dot"></div>
+                    <div class="lb-name">You</div>
+                    <div class="lb-score">32%</div>
+                </div>
+                <div class="lb-row" style="--c: var(--neon-cyan)">
+                    <div class="lb-dot"></div>
+                    <div class="lb-name">Lina</div>
+                    <div class="lb-score">24%</div>
+                </div>
+                <div class="lb-row" style="--c: var(--neon-magenta)">
+                    <div class="lb-dot"></div>
+                    <div class="lb-name">Marco</div>
+                    <div class="lb-score">18%</div>
+                </div>
+                <div class="lb-row" style="--c: var(--neon-yellow)">
+                    <div class="lb-dot"></div>
+                    <div class="lb-name">Mei</div>
+                    <div class="lb-score">15%</div>
+                </div>
+                <div class="lb-row" style="--c: var(--neon-purple)">
+                    <div class="lb-dot"></div>
+                    <div class="lb-name">Sam</div>
+                    <div class="lb-score">11%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: FINANCE (WAS SLIDE 5) -->
+        <div class="slide" id="slide-6">
             <div class="chart-container">
                 <!-- Bars will be animated by JS -->
                 <div class="bar-group">
@@ -610,6 +707,7 @@
 
         <div id="nav-dots">
             <div class="dot active"></div>
+            <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
@@ -652,24 +750,144 @@
         const dots = document.querySelectorAll('.dot');
         const totalSlides = slides.length;
 
+        // Initialize Sphere Animation Class
+        class SphereAnimation {
+            constructor() {
+                this.canvas = document.getElementById('sphere-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.active = false;
+                this.time = 0;
+                // You, Lina, Marco, Mei, Sam
+                this.colors = ['#00ff9d', '#00f3ff', '#ff0055', '#f2ff00', '#9d46ff'];
+                // Create blobs with random start offsets
+                this.blobs = this.colors.map((c, i) => ({
+                    color: c,
+                    angle: (Math.PI * 2 * i) / 5, // Even spread
+                    dist: 0.3, // Initial distance from center
+                    seed: Math.random() * 1000,
+                }));
+                this.resize();
+            }
+
+            resize() {
+                // Resolution independence for crispness
+                const rect = this.canvas.getBoundingClientRect();
+                this.canvas.width = rect.width * 2;
+                this.canvas.height = rect.height * 2;
+            }
+
+            start() {
+                if (!this.active) {
+                    this.active = true;
+                    this.resize();
+                    this.animate();
+                }
+            }
+
+            stop() {
+                this.active = false;
+            }
+
+            animate() {
+                if (!this.active) return;
+                
+                const w = this.canvas.width;
+                const h = this.canvas.height;
+                const ctx = this.ctx;
+                
+                ctx.clearRect(0, 0, w, h);
+                this.time += 0.005;
+
+                const cx = w / 2;
+                const cy = h / 2;
+                const planetRadius = Math.min(cx, cy) * 0.8;
+
+                // 1. Clip everything to the planet circle
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(cx, cy, planetRadius, 0, Math.PI * 2);
+                ctx.clip();
+
+                // 2. Base Dark Background
+                ctx.fillStyle = '#111';
+                ctx.fill();
+
+                // 3. Draw Territory Blobs
+                // Using "Screen" or lighter composition to blend them
+                ctx.globalCompositeOperation = 'screen'; 
+
+                this.blobs.forEach((blob, i) => {
+                    // Move blob center slowly
+                    const moveR = planetRadius * 0.4;
+                    const bx = cx + Math.cos(blob.angle + this.time + blob.seed) * moveR;
+                    const by = cy + Math.sin(blob.angle + this.time * 0.8 + blob.seed) * moveR;
+                    
+                    // Pulse size
+                    const size = planetRadius * (1.2 + Math.sin(this.time * 2 + blob.seed) * 0.2);
+
+                    // Draw gradient blob
+                    const grad = ctx.createRadialGradient(bx, by, 0, bx, by, size);
+                    grad.addColorStop(0, blob.color);
+                    grad.addColorStop(0.6, blob.color + '44'); // Transparent hex
+                    grad.addColorStop(1, 'transparent');
+
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(bx, by, size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                ctx.restore();
+
+                // 4. Overlay - Sphere Shading (Inner Shadow)
+                ctx.save();
+                const shadowGrad = ctx.createRadialGradient(cx, cy, planetRadius * 0.8, cx, cy, planetRadius);
+                shadowGrad.addColorStop(0, 'transparent');
+                shadowGrad.addColorStop(0.9, 'rgba(0,0,0,0.8)');
+                shadowGrad.addColorStop(1, 'rgba(0,0,0,0.9)');
+                
+                ctx.fillStyle = shadowGrad;
+                ctx.beginPath();
+                ctx.arc(cx, cy, planetRadius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Rim light
+                ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+                ctx.restore();
+
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        const sphereAnim = new SphereAnimation();
+
+
         function goToSlide(index) {
             // Bounds check
             if (index < 0) index = 0;
             if (index >= totalSlides) index = totalSlides - 1;
             
-            // Remove active classes
-            slides[currentSlide].classList.remove('active');
-            dots[currentSlide].classList.remove('active');
-
-            // Logic for cleaning up animations of previous slide
-            if (currentSlide === 1) { // Slide 2 clean up
+            // Cleanup Previous Animations
+            // If leaving Slide 2 (Index 1)
+            if (currentSlide === 1) { 
                 const stamps = slides[1].querySelectorAll('.stamp');
                 stamps.forEach(s => s.classList.remove('stamped'));
             }
-            if (currentSlide === 4) { // Slide 5 clean up (Bars)
-                const bars = slides[4].querySelectorAll('.bar');
+            // If leaving Slide 5 (Sphere, Index 4)
+            if (currentSlide === 4) {
+                sphereAnim.stop();
+            }
+            // If leaving Slide 6 (Finance, Index 5)
+            if (currentSlide === 5) { 
+                const bars = slides[5].querySelectorAll('.bar');
                 bars.forEach(b => b.style.height = '0%');
             }
+
+            // Remove active classes
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
 
             currentSlide = index;
 
@@ -679,7 +897,8 @@
 
             // Trigger In-Slide Animations
             if (currentSlide === 1) triggerSlide2(); // Competitors
-            if (currentSlide === 4) triggerSlide5(); // Finance
+            if (currentSlide === 4) triggerSlide5(); // Sphere (Friends)
+            if (currentSlide === 5) triggerSlide6(); // Finance
         }
 
         // Slide 2 Specific Animation (Sequential Stamping)
@@ -692,9 +911,17 @@
             });
         }
 
-        // Slide 5 Specific Animation (Sequential Bars)
+        // Slide 5 Specific Animation (Sphere)
         function triggerSlide5() {
-            const bars = slides[4].querySelectorAll('.bar');
+            // Slight delay to allow CSS transition to start
+            setTimeout(() => {
+                sphereAnim.start();
+            }, 100);
+        }
+
+        // Slide 6 Specific Animation (Sequential Bars) - WAS Slide 5
+        function triggerSlide6() {
+            const bars = slides[5].querySelectorAll('.bar');
             bars.forEach((bar, i) => {
                 const targetH = bar.getAttribute('data-h');
                 setTimeout(() => {
