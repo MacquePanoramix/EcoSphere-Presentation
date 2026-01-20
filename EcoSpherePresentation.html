@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSphere Pitch Deck</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --bg-panel: #141418;
+            --neon-green: #00ff9d;
+            --neon-cyan: #00f3ff;
+            --neon-magenta: #ff0055;
+            --neon-yellow: #f2ff00;
+            --text-main: #ffffff;
+            --text-muted: #888899;
+            
+            --font-main: 'Inter', sans-serif;
+            --font-accent: 'Press Start 2P', cursive;
+            
+            --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --ease-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: #000;
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        /* --- 16:9 Aspect Ratio Container --- */
+        #deck-container {
+            position: relative;
+            width: 100vw;
+            height: 56.25vw; /* 16:9 based on width */
+            max-height: 100vh;
+            max-width: 177.78vh; /* 16:9 based on height */
+            background-color: var(--bg-dark);
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        /* --- Background Particles --- */
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* --- Navigation Dots --- */
+        #nav-dots {
+            position: absolute;
+            bottom: 3%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .dot.active {
+            background: var(--neon-green);
+            transform: scale(1.5);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        /* --- Slides Common --- */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.05);
+            transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth);
+            display: flex;
+            z-index: 10;
+            padding: 5%;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        /* --- Icons & Placeholders --- */
+        .icon {
+            width: 48px;
+            height: 48px;
+            fill: currentColor;
+        }
+
+        .img-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a20, #0f0f12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .img-placeholder svg {
+            width: 30%;
+            height: 30%;
+            opacity: 0.2;
+        }
+
+        .img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- SLIDE 1: HERO --- */
+        #slide-1 {
+            align-items: center;
+            justify-content: center;
+            gap: 5%;
+        }
+
+        .hero-phone {
+            width: 25%;
+            height: 80%;
+            background: #000;
+            border-radius: 40px;
+            border: 4px solid #333;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 2px #1a1a1a;
+            transform: translateY(0);
+            animation: float 6s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        .hero-phone::before { /* Notch */
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 25px;
+            background: #000;
+            border-radius: 0 0 15px 15px;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 8rem;
+            font-weight: 900;
+            letter-spacing: -4px;
+            background: linear-gradient(to right, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .hero-subtitle {
+            font-family: var(--font-accent);
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* --- SLIDE 2: COMPETITORS --- */
+        #slide-2 {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .competitor-card {
+            width: 30%;
+            height: 70%;
+            background: var(--bg-panel);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Scanline sweep effect */
+        .scan-line {
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,0,0,0.1), transparent);
+            transform: skewX(-20deg);
+        }
+        
+        .slide.active .scan-line {
+            animation: sweep 3s linear forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes sweep {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        .stamp {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(3);
+            width: 160px;
+            height: 160px;
+            border: 8px solid var(--neon-magenta);
+            border-radius: 10px;
+            color: var(--neon-magenta);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-accent);
+            opacity: 0;
+            z-index: 10;
+            background: rgba(20,0,5,0.8);
+            backdrop-filter: blur(2px);
+        }
+        
+        .stamp svg { width: 50px; height: 50px; fill: var(--neon-magenta); margin-bottom: 10px; }
+        .stamp span { font-size: 1.2rem; letter-spacing: 2px; }
+
+        .slide.active .stamp.stamped {
+            animation: stamp-land 0.4s var(--ease-out-back) forwards;
+        }
+
+        @keyframes stamp-land {
+            0% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(-10deg); opacity: 1; }
+        }
+
+        /* --- SLIDE 3: PRIVACY --- */
+        #slide-3 {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .privacy-lockup {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .big-shield {
+            width: 300px;
+            height: 350px;
+            stroke: var(--neon-green);
+            stroke-width: 5;
+            fill: rgba(0, 255, 157, 0.05);
+            filter: drop-shadow(0 0 20px var(--neon-green));
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: stroke-dashoffset 1.5s ease;
+        }
+
+        .slide.active .big-shield {
+            stroke-dashoffset: 0;
+            transition-delay: 0.2s;
+        }
+
+        .privacy-icons {
+            position: absolute;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .p-icon {
+            fill: #fff;
+            width: 60px;
+            height: 60px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .slide.active .p-icon {
+            animation: fadeUp 0.6s var(--ease-out-back) forwards;
+        }
+        .slide.active .p-icon:nth-child(1) { animation-delay: 1s; }
+        .slide.active .p-icon:nth-child(2) { animation-delay: 1.2s; } /* The + sign */
+        .slide.active .p-icon:nth-child(3) { animation-delay: 1.4s; }
+
+        .privacy-stamp {
+            position: absolute;
+            bottom: -80px;
+            font-family: var(--font-accent);
+            color: var(--neon-green);
+            font-size: 2rem;
+            border: 4px solid var(--neon-green);
+            padding: 10px 20px;
+            transform: rotate(-5deg) scale(0);
+            opacity: 0;
+        }
+
+        .slide.active .privacy-stamp {
+            animation: popIn 0.5s var(--ease-out-back) forwards 2s;
+        }
+
+        @keyframes popIn {
+            to { transform: rotate(-5deg) scale(1); opacity: 1; }
+        }
+
+        /* --- SLIDE 4: MECHANICS (Steps -> Energy) --- */
+        #slide-4 {
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .mechanic-row {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .mech-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .slide.active .mech-item {
+            animation: fadeUp 0.8s ease forwards;
+        }
+        .slide.active .mech-item:nth-child(1) { animation-delay: 0.2s; }
+        .slide.active .mech-item:nth-child(2) { animation-delay: 0.6s; }
+        .slide.active .mech-item:nth-child(3) { animation-delay: 1.0s; }
+
+        .mech-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .mech-circle svg { width: 60px; height: 60px; fill: #fff; }
+        
+        .pulse-ring {
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            border-radius:50%;
+            border: 2px solid var(--neon-cyan);
+            animation: pulse-ring 2s infinite;
+        }
+
+        .arrow-right {
+            fill: var(--text-muted);
+            width: 40px; height: 40px;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- SLIDE 5: FINANCE --- */
+        #slide-5 {
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 8%;
+        }
+
+        .chart-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 40px;
+            height: 60%;
+            width: 80%;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+        }
+
+        .bar {
+            width: 60px;
+            background: linear-gradient(to top, var(--neon-green), transparent);
+            border-top: 3px solid var(--neon-green);
+            height: 0%; /* JS will set this */
+            transition: height 1.5s var(--ease-out-back);
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,255,157, 0.2);
+        }
+
+        .bar-label {
+            margin-top: 20px;
+            font-family: var(--font-accent);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .slide.active .bar {
+            /* Heights handled by JS for sequential delay */
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div id="deck-container">
+        <canvas id="bg-canvas"></canvas>
+
+        <!-- SLIDE 1: HERO -->
+        <div class="slide active" id="slide-1">
+            <div class="hero-phone">
+                <div class="img-placeholder" data-img="appScreenshot">
+                    <!-- App UI Placeholder -->
+                    <svg viewBox="0 0 24 24"><path d="M5 13h14v-2H5v2zm-2 4h14v-2H3v2zM7 7v2h14V7H7z" /></svg>
+                </div>
+            </div>
+            <div class="hero-text">
+                <h1>EcoSphere</h1>
+                <div class="hero-subtitle">Move to Earn. Save the World.</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: COMPETITORS -->
+        <div class="slide" id="slide-2">
+            <!-- Competitor 1 -->
+            <div class="competitor-card">
+                <div class="img-placeholder" data-img="competitor1">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                </div>
+                <div class="scan-line"></div>
+                <div class="stamp">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span>GPS</span>
+                </div>
+            </div>
+            <!-- Competitor 2 -->
+            <div class="competitor-card">
+                <div class="img-placeholder" data-img="competitor2">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                </div>
+                <div class="scan-line"></div>
+                <div class="stamp">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span>GPS</span>
+                </div>
+            </div>
+            <!-- Competitor 3 -->
+            <div class="competitor-card">
+                <div class="img-placeholder" data-img="competitor3">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                </div>
+                <div class="scan-line"></div>
+                <div class="stamp">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span>GPS</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: PRIVACY -->
+        <div class="slide" id="slide-3">
+            <div class="privacy-lockup">
+                <svg class="big-shield" viewBox="0 0 24 24">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                </svg>
+                <div class="privacy-icons">
+                    <!-- Footsteps -->
+                    <svg class="p-icon" viewBox="0 0 24 24">
+                        <path d="M19,5.55C19,8.55 17.69,11.23 15.63,13.06L16.5,15.65C16.92,15.82 17.38,15.93 17.85,15.93C18.67,15.93 19.45,15.7 20.14,15.3L22,20.84C20.67,21.57 19.16,22 17.5,22C14.79,22 12.3,20.9 10.5,19.1L12.55,16.4C13.88,17.38 15.53,17.97 17.34,17.97C17.5,17.97 17.65,17.97 17.81,17.95L16.27,13.34C14.07,11.75 12.64,9.15 12.64,6.23C12.64,3.31 14.07,0.71 16.27,0L17.81,4.61C18.5,4.83 19,5.16 19,5.55Z" fill="white"/>
+                    </svg>
+                    <!-- Plus -->
+                    <svg class="p-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="white"/></svg>
+                    <!-- Wifi -->
+                    <svg class="p-icon" viewBox="0 0 24 24"><path d="M12.01 21.49L23.64 7c-.45-.34-4.93-4-11.64-4C5.28 3 .81 6.66.36 7l11.63 14.49.01.01.01-.01z" fill="white"/></svg>
+                </div>
+            </div>
+            <div class="privacy-stamp">NO GPS</div>
+        </div>
+
+        <!-- SLIDE 4: MECHANICS -->
+        <div class="slide" id="slide-4">
+            <div class="mechanic-row">
+                <!-- Step 1: Walk -->
+                <div class="mech-item">
+                    <div class="mech-circle" style="border-color: var(--neon-cyan)">
+                        <div class="pulse-ring"></div>
+                        <svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7z"/></svg>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="mech-item">
+                    <svg class="arrow-right" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                </div>
+
+                <!-- Step 2: Energy/Token -->
+                <div class="mech-item">
+                     <div class="mech-circle" style="border-color: var(--neon-green)">
+                         <div class="pulse-ring" style="border-color: var(--neon-green)"></div>
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.35 0 .81.91 1.17 2.67 1.6 2.38.6 4.43 1.72 4.43 4.08 0 2.77-1.82 3.93-3.37 4.19z"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: FINANCE -->
+        <div class="slide" id="slide-5">
+            <div class="chart-container">
+                <!-- Bars will be animated by JS -->
+                <div class="bar-group">
+                    <div class="bar" data-h="20%"></div>
+                    <span class="bar-label">Y1</span>
+                </div>
+                <div class="bar-group">
+                    <div class="bar" data-h="35%"></div>
+                    <span class="bar-label">Y2</span>
+                </div>
+                <div class="bar-group">
+                    <div class="bar" data-h="55%"></div>
+                    <span class="bar-label">Y3</span>
+                </div>
+                <div class="bar-group">
+                    <div class="bar" data-h="75%"></div>
+                    <span class="bar-label">Y4</span>
+                </div>
+                <div class="bar-group">
+                    <div class="bar" data-h="100%"></div>
+                    <span class="bar-label">Y5</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="nav-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <script>
+        /* =========================================
+           CONFIGURATION
+           ========================================= */
+        const CONFIG = {
+            images: {
+                appScreenshot: "", // Add URL here
+                competitor1: "",   // Add URL here
+                competitor2: "",   // Add URL here
+                competitor3: "",   // Add URL here
+            }
+        };
+
+        /* =========================================
+           IMAGE LOADER
+           ========================================= */
+        document.querySelectorAll('.img-placeholder').forEach(el => {
+            const key = el.getAttribute('data-img');
+            const url = CONFIG.images[key];
+            if (url && url.length > 0) {
+                const img = document.createElement('img');
+                img.src = url;
+                img.onerror = () => img.style.display = 'none'; // Fallback to SVG if broken
+                el.appendChild(img);
+            }
+        });
+
+        /* =========================================
+           SLIDE LOGIC
+           ========================================= */
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = slides.length;
+
+        function goToSlide(index) {
+            // Bounds check
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+            
+            // Remove active classes
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+
+            // Logic for cleaning up animations of previous slide
+            if (currentSlide === 1) { // Slide 2 clean up
+                const stamps = slides[1].querySelectorAll('.stamp');
+                stamps.forEach(s => s.classList.remove('stamped'));
+            }
+            if (currentSlide === 4) { // Slide 5 clean up (Bars)
+                const bars = slides[4].querySelectorAll('.bar');
+                bars.forEach(b => b.style.height = '0%');
+            }
+
+            currentSlide = index;
+
+            // Add active classes
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+
+            // Trigger In-Slide Animations
+            if (currentSlide === 1) triggerSlide2(); // Competitors
+            if (currentSlide === 4) triggerSlide5(); // Finance
+        }
+
+        // Slide 2 Specific Animation (Sequential Stamping)
+        function triggerSlide2() {
+            const stamps = slides[1].querySelectorAll('.stamp');
+            stamps.forEach((stamp, i) => {
+                setTimeout(() => {
+                    stamp.classList.add('stamped');
+                }, 600 + (i * 300));
+            });
+        }
+
+        // Slide 5 Specific Animation (Sequential Bars)
+        function triggerSlide5() {
+            const bars = slides[4].querySelectorAll('.bar');
+            bars.forEach((bar, i) => {
+                const targetH = bar.getAttribute('data-h');
+                setTimeout(() => {
+                    bar.style.height = targetH;
+                }, 200 + (i * 150));
+            });
+        }
+
+        // Event Listeners
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') goToSlide(currentSlide + 1);
+            if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+        });
+
+        document.getElementById('deck-container').addEventListener('click', (e) => {
+            // Prevent next slide if clicking specifically on a dot
+            if(e.target.classList.contains('dot')) return;
+            goToSlide(currentSlide + 1);
+        });
+
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => goToSlide(idx));
+        });
+
+        /* =========================================
+           PARTICLE BACKGROUND SYSTEM
+           ========================================= */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            const container = document.getElementById('deck-container');
+            width = container.clientWidth;
+            height = container.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 1;
+                this.speedY = Math.random() * -0.5 - 0.2; // Float up
+                this.speedX = (Math.random() - 0.5) * 0.5; // Drift L/R
+                this.alpha = Math.random() * 0.3 + 0.1;
+                this.color = Math.random() > 0.5 ? '0, 255, 157' : '0, 243, 255'; // Green or Cyan
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                
+                if (this.y < 0) this.reset(); // Wrap to bottom
+                if (this.x < 0 || this.x > width) this.reset();
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 60; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Init
+        window.addEventListener('resize', resize);
+        resize();
+        initParticles();
+        animateParticles();
+
+    </script>
+</body>
+</html>
