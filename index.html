@@ -140,10 +140,17 @@
         .img-placeholder img {
             width: 100%;
             height: 100%;
-              object-fit: contain;
-  object-position: center;
-  background: #000; /* optional: nicer letterboxing */
+              object-fit: cover;
         }
+
+        .hero-phone .img-placeholder {
+  padding-top: 25px; /* matches notch height */
+}
+.hero-phone .img-placeholder img {
+  height: calc(100% - 25px);
+  object-fit: contain; /* or cover */
+}
+
 
         /* --- SLIDE 1: HERO --- */
         #slide-1 {
