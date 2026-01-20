@@ -643,6 +643,13 @@
             transition: opacity 0.3s ease;
         }
 
+        .fin-bg {
+            opacity: 0; 
+            transition: opacity 0.3s ease; 
+            fill: rgba(0,0,0,0.8); 
+            rx: 4px;
+        }
+
         .fin-footnote {
             font-size: 0.7rem;
             color: var(--text-muted);
@@ -652,11 +659,11 @@
 
         /* Animation States */
         .slide.active .fin-bar { transform: scaleY(1); }
-        .slide.active .fin-bar:nth-child(1) { transition-delay: 0.2s; }
-        .slide.active .fin-bar:nth-child(2) { transition-delay: 0.4s; }
-        .slide.active .fin-bar:nth-child(3) { transition-delay: 0.6s; }
-        .slide.active .fin-bar:nth-child(4) { transition-delay: 0.8s; }
-        .slide.active .fin-bar:nth-child(5) { transition-delay: 1.0s; }
+        .slide.active .fin-bar:nth-child(4) { transition-delay: 0.2s; } /* Y1 */
+        .slide.active .fin-bar:nth-child(6) { transition-delay: 0.4s; } /* Y2 */
+        .slide.active .fin-bar:nth-child(8) { transition-delay: 0.6s; } /* Y3 */
+        .slide.active .fin-bar:nth-child(10) { transition-delay: 0.8s; } /* Y4 */
+        .slide.active .fin-bar:nth-child(12) { transition-delay: 1.0s; } /* Y5 */
 
         .slide.active .fin-line-segment { stroke-dashoffset: 0; }
         .slide.active #seg1 { transition-delay: 1.2s; }
@@ -665,7 +672,7 @@
         .slide.active #seg4 { transition-delay: 1.7s; }
         .slide.active #seg5 { transition-delay: 1.9s; }
 
-        .slide.active .fin-marker, .slide.active .fin-label { opacity: 1; transition-delay: 2.2s; }
+        .slide.active .fin-marker, .slide.active .fin-label, .slide.active .fin-bg { opacity: 1; transition-delay: 2.2s; }
 
     </style>
 </head>
@@ -859,26 +866,37 @@
                 <h2 class="fin-header">Revenue & Profit (EU)</h2>
                 <!-- SVG Chart: 600x400 range logic handled via viewBox and scale -->
                 <svg class="fin-svg" viewBox="0 0 600 400">
+                    
+                    <!-- Legend -->
+                    <g transform="translate(60, 20)">
+                        <rect x="0" y="0" width="12" height="12" fill="var(--neon-green)" opacity="0.8" />
+                        <text x="20" y="10" fill="#fff" font-size="10" font-family="var(--font-main)">Revenue</text>
+                        
+                        <line x1="100" y1="6" x2="120" y2="6" stroke="var(--neon-green)" stroke-width="2" />
+                        <circle cx="110" cy="6" r="3" fill="var(--bg-dark)" stroke="var(--neon-green)" stroke-width="2" />
+                        <text x="130" y="10" fill="#fff" font-size="10" font-family="var(--font-main)">Cum. Profit</text>
+                    </g>
+                    
                     <!-- Zero Line (at y=272) -->
                     <line x1="50" y1="272" x2="550" y2="272" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-dasharray="5,5"/>
                     <text x="45" y="276" fill="#888" font-size="12" text-anchor="end">0</text>
                     <text x="45" y="40" fill="#888" font-size="12" text-anchor="end">€80k</text>
                     <text x="45" y="390" fill="#888" font-size="12" text-anchor="end">-€30k</text>
 
-                    <!-- Revenue Bars (Green) -->
-                    <rect class="fin-bar" x="80" y="209" width="40" height="63" />
+                    <!-- Revenue Bars (Green) - Reduced Width to 28px -->
+                    <rect class="fin-bar" x="86" y="209" width="28" height="63" />
                     <text class="fin-label" x="100" y="200">€22k</text>
 
-                    <rect class="fin-bar" x="180" y="114" width="40" height="158" />
+                    <rect class="fin-bar" x="186" y="114" width="28" height="158" />
                     <text class="fin-label" x="200" y="105">€54k</text>
 
-                    <rect class="fin-bar" x="280" y="67" width="40" height="205" />
+                    <rect class="fin-bar" x="286" y="67" width="28" height="205" />
                     <text class="fin-label" x="300" y="58">€71k</text>
 
-                    <rect class="fin-bar" x="380" y="82" width="40" height="190" />
+                    <rect class="fin-bar" x="386" y="82" width="28" height="190" />
                     <text class="fin-label" x="400" y="73">€65k</text>
 
-                    <rect class="fin-bar" x="480" y="114" width="40" height="158" />
+                    <rect class="fin-bar" x="486" y="114" width="28" height="158" />
                     <text class="fin-label" x="500" y="105">€54k</text>
 
                     <!-- Cumulative Profit Line (Segmented for Color) -->
@@ -895,18 +913,28 @@
 
                     <!-- Profit Markers & Labels -->
                     <circle class="fin-marker neg" cx="100" cy="337" r="6" />
+                    <!-- Label BG pill for Y1 -->
+                    <rect class="fin-bg" x="78" y="342" width="44" height="18" />
                     <text class="fin-label" x="100" y="355">-€22k</text>
 
                     <circle class="fin-marker neg" cx="200" cy="298" r="6" />
+                    <!-- Label BG pill for Y2 -->
+                    <rect class="fin-bg" x="178" y="305" width="44" height="18" />
                     <text class="fin-label" x="200" y="318">-€9k</text>
 
                     <circle class="fin-marker pos" cx="300" cy="211" r="6" />
+                    <!-- Label BG pill for Y3 -->
+                    <rect class="fin-bg" x="308" y="202" width="44" height="18" />
                     <text class="fin-label" x="330" y="215">+€21k</text>
 
                     <circle class="fin-marker pos" cx="400" cy="140" r="6" />
+                    <!-- Label BG pill for Y4 -->
+                    <rect class="fin-bg" x="408" y="132" width="44" height="18" />
                     <text class="fin-label" x="430" y="145">+€46k</text>
 
                     <circle class="fin-marker pos" cx="500" cy="110" r="6" />
+                    <!-- Label BG pill for Y5 -->
+                    <rect class="fin-bg" x="508" y="102" width="44" height="18" />
                     <text class="fin-label" x="530" y="115">+€56k</text>
 
                     <!-- X Labels -->
