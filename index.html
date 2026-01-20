@@ -112,7 +112,7 @@
             transform: scale(1);
         }
 
-        /* --- s & Placeholders --- */
+        /* --- Icons & Placeholders --- */
         .icon {
             width: 48px;
             height: 48px;
@@ -140,9 +140,8 @@
         .img-placeholder img {
             width: 100%;
             height: 100%;
-              object-fit: cover;
+            object-fit: cover;
         }
-
 
         /* --- SLIDE 1: HERO --- */
         #slide-1 {
@@ -177,34 +176,32 @@
         }
 
         /* --- Phone screen inset (the "margin") --- */
-.hero-phone{
-  --bezel: 14px;        /* left/right/bottom margin inside phone */
-  --top-safe: 34px;     /* pushes screen down (so notch doesn't cover content) */
-  --screen-radius: 30px;
-}
+        .hero-phone {
+            --bezel: 14px;        /* left/right/bottom margin inside phone */
+            --top-safe: 34px;     /* pushes screen down (so notch doesn't cover content) */
+            --screen-radius: 30px;
+        }
 
-/* Make the screen area smaller than the outer phone frame */
-.hero-phone .img-placeholder{
-  position: absolute;
-  left: calc(var(--bezel) - 50px);
-  right: var(--bezel);
-  bottom: var(--bezel);
-  top: var(--top-safe);
+        /* Make the screen area smaller than the outer phone frame */
+        .hero-phone .img-placeholder {
+            position: absolute;
+            left: calc(var(--bezel) - 50px);
+            right: var(--bezel);
+            bottom: var(--bezel);
+            top: var(--top-safe);
+            border-radius: var(--screen-radius);
+            overflow: hidden;
+            background: #000; /* looks like real phone glass */
+        }
 
-  border-radius: var(--screen-radius);
-  overflow: hidden;
-  background: #000; /* looks like real phone glass */
-}
-
-/* Fill the screen nicely */
-.hero-phone .img-placeholder img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.06); /* zoom a bit to hide “built-in” borders in the screenshot */
-}
-
+        /* Fill the screen nicely */
+        .hero-phone .img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transform: scale(1.06); /* zoom a bit to hide “built-in” borders in the screenshot */
+        }
 
         .hero-text h1 {
             font-size: 8rem;
@@ -596,21 +593,11 @@
         .slide.active .chart-marker { opacity: 1; transition-delay: 1.2s; }
         .slide.active .chart-value { opacity: 1; transform: translateY(0); transition-delay: 1.4s; }
 
-        /* --- SLIDE 7: FINANCE FINAL (NEW) --- */
+        /* --- SLIDE 7: FINANCE FINAL (CHART ONLY) --- */
         #slide-finance {
             align-items: center;
             justify-content: center;
-            gap: 30px;
-            flex-direction: row;
-        }
-
-        .fin-sheet-img {
-            width: 25%;
-            height: 70%;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
+            /* Flex center logic handles content centering now that image is gone */
         }
 
         .fin-chart-container {
@@ -674,7 +661,6 @@
             transition: opacity 0.3s ease;
         }
 
-        /* NEW CLASS FOR CUMULATIVE LABELS */
         .fin-cum-label {
             fill: #4CC9FF;
             font-weight: 700;
@@ -693,6 +679,25 @@
             color: var(--text-muted);
             margin-top: 10px;
             text-align: left;
+        }
+
+        /* --- SLIDE 8: FINANCE SHEET (NEW) --- */
+        #slide-finance-sheet {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5%;
+        }
+
+        .fin-sheet-full {
+            width: 80%;
+            height: 80%;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
         /* Animation States */
@@ -778,7 +783,7 @@
                 </svg>
                 <div class="privacy-icons">
                     <!-- Footsteps -->
-                   <img class="p-icon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><ellipse fill='%23ffffff' cx='22' cy='8' rx='6' ry='8'/><ellipse fill='%23ffffff' cx='42' cy='20' rx='6' ry='8'/><path fill='%23ffffff' d='M18 18c-2 0-4 2-4 4l-4 20c-0.5 2 1 4 3 4s4-1 4.5-3l3-12l4 24c0.5 2 2 4 4.5 4s3.5-2 3-4l-6-32c-0.5-3-3-5-6-5z'/><path fill='%23ffffff' d='M38 30c-2 0-4 2-4 4l-4 20c-0.5 2 1 4 3 4s4-1 4.5-3l3-12l4 14c0.5 2 2 4 4.5 4s3.5-2 3-4l-6-22c-0.5-3-3-5-6-5z'/></svg>" alt="Steps">
+                    <img class="p-icon" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path fill='%23ffffff' d='M25 7c-5 0-9 4-9 9v9c0 4 3 8 8 9l6 1c3 1 5 3 5 6v10c0 4-3 7-7 7H17c-5 0-9-4-9-9v-7c0-3 2-6 5-7l7-2c2-1 4-3 4-6V16c0-1 1-2 2-2h6c1 0 2-1 2-2V9c0-1-1-2-2-2h-7z'/><path fill='%23ffffff' d='M44 10c-4 0-7 3-7 7v7c0 3 2 6 5 7l4 1c2 0 3 2 3 4v8c0 3-2 5-5 5h-7c-3 0-6-3-6-6v-5c0-2 1-4 3-4l5-2c2 0 3-2 3-4v-7c0-1 1-2 2-2h4c1 0 2-1 2-2v-2c0-1-1-2-2-2h-4z'/></svg>" alt="Steps">
                     <!-- Plus -->
                     <svg class="p-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="white"/></svg>
                     <!-- Wifi -->
@@ -893,13 +898,8 @@
             </div>
         </div>
 
-        <!-- SLIDE 7: FINANCE FINAL (UPDATED) -->
+        <!-- SLIDE 7: FINANCE FINAL (CHART ONLY) -->
         <div class="slide" id="slide-finance">
-            <div class="fin-sheet-img">
-                <div class="img-placeholder" data-img="financeSheet">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>
-                </div>
-            </div>
             <div class="fin-chart-container">
                 <h2 class="fin-header">Revenue & Profit (EU)</h2>
                 <!-- SVG Chart: 600x400 range logic handled via viewBox and scale -->
@@ -988,8 +988,18 @@
             </div>
         </div>
 
+        <!-- SLIDE 8: FINANCE SHEET (NEW) -->
+        <div class="slide" id="slide-finance-sheet">
+            <div class="fin-sheet-full">
+                <div class="img-placeholder" data-img="financeSheet">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>
+                </div>
+            </div>
+        </div>
+
         <div id="nav-dots">
             <div class="dot active"></div>
+            <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
             <div class="dot"></div>
