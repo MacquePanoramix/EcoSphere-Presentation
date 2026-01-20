@@ -493,7 +493,7 @@
             box-shadow: 0 0 8px var(--c);
         }
         .lb-name { flex: 1; font-weight: 700; font-size: 0.9rem; }
-        .lb-score { font-family: var(--font-accent); font-size: 0.7rem; color: var(--text-muted); }
+        .lb-score { font-family: var(--font-accent); font-size: 0.7rem; color: var(--text-muted); width: 40px; text-align: right; }
 
         .lb-row.you { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); }
 
@@ -653,27 +653,27 @@
                 <div class="lb-row you" style="--c: var(--neon-green)">
                     <div class="lb-dot"></div>
                     <div class="lb-name">You</div>
-                    <div class="lb-score">32%</div>
+                    <div class="lb-score">0%</div>
                 </div>
                 <div class="lb-row" style="--c: var(--neon-cyan)">
                     <div class="lb-dot"></div>
                     <div class="lb-name">Lina</div>
-                    <div class="lb-score">24%</div>
+                    <div class="lb-score">0%</div>
                 </div>
                 <div class="lb-row" style="--c: var(--neon-magenta)">
                     <div class="lb-dot"></div>
                     <div class="lb-name">Marco</div>
-                    <div class="lb-score">18%</div>
+                    <div class="lb-score">0%</div>
                 </div>
                 <div class="lb-row" style="--c: var(--neon-yellow)">
                     <div class="lb-dot"></div>
                     <div class="lb-name">Mei</div>
-                    <div class="lb-score">15%</div>
+                    <div class="lb-score">0%</div>
                 </div>
                 <div class="lb-row" style="--c: var(--neon-purple)">
                     <div class="lb-dot"></div>
                     <div class="lb-name">Sam</div>
-                    <div class="lb-score">11%</div>
+                    <div class="lb-score">0%</div>
                 </div>
             </div>
         </div>
@@ -757,20 +757,41 @@
                 this.ctx = this.canvas.getContext('2d');
                 this.active = false;
                 this.time = 0;
-                // You, Lina, Marco, Mei, Sam
+                
+                // Colors corresponding to leaderboard: You, Lina, Marco, Mei, Sam
                 this.colors = ['#00ff9d', '#00f3ff', '#ff0055', '#f2ff00', '#9d46ff'];
-                // Create blobs with random start offsets
-                this.blobs = this.colors.map((c, i) => ({
-                    color: c,
-                    angle: (Math.PI * 2 * i) / 5, // Even spread
-                    dist: 0.3, // Initial distance from center
-                    seed: Math.random() * 1000,
+                
+                // Simulation resolution (lower = faster + retro feel, higher = smoother)
+                this.simSize = 150; 
+                this.mapCanvas = document.createElement('canvas');
+                this.mapCanvas.width = this.simSize;
+                this.mapCanvas.height = this.simSize;
+                this.mapCtx = this.mapCanvas.getContext('2d');
+                this.mapImage = this.mapCtx.createImageData(this.simSize, this.simSize);
+
+                // Seeds for territories
+                this.seeds = this.colors.map((c, i) => ({
+                    x: Math.random() * this.simSize,
+                    y: Math.random() * this.simSize,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    strength: 1.0,
+                    baseStrength: 0.8 + Math.random() * 0.4,
+                    phase: Math.random() * 10,
+                    colorInt: this.hexToRgb(c)
                 }));
+
+                this.lbRows = document.querySelectorAll('.leaderboard .lb-score');
+                
                 this.resize();
             }
 
+            hexToRgb(hex) {
+                const bigint = parseInt(hex.slice(1), 16);
+                return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+            }
+
             resize() {
-                // Resolution independence for crispness
                 const rect = this.canvas.getBoundingClientRect();
                 this.canvas.width = rect.width * 2;
                 this.canvas.height = rect.height * 2;
@@ -791,72 +812,128 @@
             animate() {
                 if (!this.active) return;
                 
-                const w = this.canvas.width;
-                const h = this.canvas.height;
-                const ctx = this.ctx;
+                this.time += 0.01;
                 
-                ctx.clearRect(0, 0, w, h);
-                this.time += 0.005;
-
-                const cx = w / 2;
-                const cy = h / 2;
-                const planetRadius = Math.min(cx, cy) * 0.8;
-
-                // 1. Clip everything to the planet circle
-                ctx.save();
-                ctx.beginPath();
-                ctx.arc(cx, cy, planetRadius, 0, Math.PI * 2);
-                ctx.clip();
-
-                // 2. Base Dark Background
-                ctx.fillStyle = '#111';
-                ctx.fill();
-
-                // 3. Draw Territory Blobs
-                // Using "Screen" or lighter composition to blend them
-                ctx.globalCompositeOperation = 'screen'; 
-
-                this.blobs.forEach((blob, i) => {
-                    // Move blob center slowly
-                    const moveR = planetRadius * 0.4;
-                    const bx = cx + Math.cos(blob.angle + this.time + blob.seed) * moveR;
-                    const by = cy + Math.sin(blob.angle + this.time * 0.8 + blob.seed) * moveR;
-                    
-                    // Pulse size
-                    const size = planetRadius * (1.2 + Math.sin(this.time * 2 + blob.seed) * 0.2);
-
-                    // Draw gradient blob
-                    const grad = ctx.createRadialGradient(bx, by, 0, bx, by, size);
-                    grad.addColorStop(0, blob.color);
-                    grad.addColorStop(0.6, blob.color + '44'); // Transparent hex
-                    grad.addColorStop(1, 'transparent');
-
-                    ctx.fillStyle = grad;
-                    ctx.beginPath();
-                    ctx.arc(bx, by, size, 0, Math.PI * 2);
-                    ctx.fill();
+                // Update Seeds
+                this.seeds.forEach(seed => {
+                    seed.x += seed.vx;
+                    seed.y += seed.vy;
+                    // Bounce off edges of sim box
+                    if(seed.x < 0 || seed.x > this.simSize) seed.vx *= -1;
+                    if(seed.y < 0 || seed.y > this.simSize) seed.vy *= -1;
+                    // Oscillate strength
+                    seed.strength = seed.baseStrength + Math.sin(this.time * 2 + seed.phase) * 0.2;
                 });
+
+                // Compute Voronoi
+                const w = this.simSize;
+                const h = this.simSize;
+                const data = this.mapImage.data;
+                const counts = [0, 0, 0, 0, 0];
+                let totalPixels = 0;
+
+                for (let y = 0; y < h; y++) {
+                    for (let x = 0; x < w; x++) {
+                        const idx = (y * w + x) * 4;
+                        
+                        // Distance check for circular mask logic
+                        const dx = x - w/2;
+                        const dy = y - h/2;
+                        if (dx*dx + dy*dy > (w/2 - 2)*(w/2 - 2)) {
+                            data[idx+3] = 0; // Transparent
+                            continue;
+                        }
+
+                        // Find winner
+                        let record = Infinity;
+                        let winner = -1;
+                        let secondRecord = Infinity;
+                        
+                        for (let i = 0; i < this.seeds.length; i++) {
+                            const s = this.seeds[i];
+                            const distSq = (x - s.x)**2 + (y - s.y)**2;
+                            // Weighted distance
+                            const d = distSq / (s.strength * s.strength); 
+                            
+                            if (d < record) {
+                                secondRecord = record;
+                                record = d;
+                                winner = i;
+                            } else if (d < secondRecord) {
+                                secondRecord = d;
+                            }
+                        }
+
+                        // Assign Color + Border Logic
+                        if (winner !== -1) {
+                            const c = this.seeds[winner].colorInt;
+                            // Simple border: if diff between closest and 2nd closest is small
+                            if ((secondRecord - record) < 5) { // Border threshold
+                                data[idx] = 0;   // Dark border
+                                data[idx+1] = 0;
+                                data[idx+2] = 0;
+                            } else {
+                                data[idx] = c[0];
+                                data[idx+1] = c[1];
+                                data[idx+2] = c[2];
+                            }
+                            data[idx+3] = 255;
+                            counts[winner]++;
+                            totalPixels++;
+                        }
+                    }
+                }
+                
+                this.mapCtx.putImageData(this.mapImage, 0, 0);
+
+                // Rendering to Main Canvas
+                const ctx = this.ctx;
+                const cw = this.canvas.width;
+                const ch = this.canvas.height;
+                const cx = cw / 2;
+                const cy = ch / 2;
+                const r = Math.min(cw, ch) * 0.4; // Planet radius
+
+                ctx.clearRect(0, 0, cw, ch);
+
+                ctx.save();
+                
+                // 1. Create circular mask
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.clip();
+                
+                // 2. Draw the low-res map scaled up (nearest neighbor for crispness)
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(this.mapCanvas, cx - r, cy - r, r * 2, r * 2);
+                
+                // 3. Shading Overlay
+                const grad = ctx.createRadialGradient(cx, cy, r * 0.5, cx, cy, r);
+                grad.addColorStop(0, 'rgba(0,0,0,0)');
+                grad.addColorStop(0.7, 'rgba(0,0,0,0.3)');
+                grad.addColorStop(1, 'rgba(0,0,0,0.8)');
+                ctx.fillStyle = grad;
+                ctx.fill();
 
                 ctx.restore();
 
-                // 4. Overlay - Sphere Shading (Inner Shadow)
+                // 4. Rim Light
                 ctx.save();
-                const shadowGrad = ctx.createRadialGradient(cx, cy, planetRadius * 0.8, cx, cy, planetRadius);
-                shadowGrad.addColorStop(0, 'transparent');
-                shadowGrad.addColorStop(0.9, 'rgba(0,0,0,0.8)');
-                shadowGrad.addColorStop(1, 'rgba(0,0,0,0.9)');
-                
-                ctx.fillStyle = shadowGrad;
                 ctx.beginPath();
-                ctx.arc(cx, cy, planetRadius, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Rim light
-                ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-                ctx.lineWidth = 4;
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+                ctx.lineWidth = 3;
                 ctx.stroke();
                 ctx.restore();
 
+                // Update Leaderboard
+                if (totalPixels > 0) {
+                    this.lbRows.forEach((row, i) => {
+                        const pct = Math.round((counts[i] / totalPixels) * 100);
+                        row.textContent = pct + '%';
+                    });
+                }
+                
                 requestAnimationFrame(() => this.animate());
             }
         }
