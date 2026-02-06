@@ -735,6 +735,76 @@
 
         .slide.active .fin-marker, .slide.active .fin-label, .slide.active .fin-bg { opacity: 1; transition-delay: 2.2s; }
 
+
+        /* =========================
+   PRINT / PDF EXPORT STYLES
+   Put this near the END of your <style> block
+   ========================= */
+@media print {
+
+  /* Print colors + backgrounds (super important) */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Let the page scroll normally in print mode */
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Remove interactive UI that makes no sense in PDF */
+  #nav-dots,
+  #bg-canvas,
+  #sphere-canvas {
+    display: none !important;
+  }
+
+  /* IMPORTANT: remove the centered "screen" behavior */
+  body {
+    display: block !important;
+    background: #000 !important;
+    user-select: text !important;
+  }
+
+  /* Make the deck behave like a normal document */
+  #deck-container {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    background: #000 !important;
+  }
+
+  /* Turn each slide into its own printed page */
+  .slide {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+
+    display: flex !important;
+
+    width: 100% !important;
+    height: 100vh !important;       /* one slide per page */
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  /* Stop animations/transitions from messing up print */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
     </style>
 </head>
 <body>
